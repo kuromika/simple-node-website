@@ -1,6 +1,7 @@
 import http from 'http';
 import fs from 'fs';
 
+//hostname could be 'localhost', in this case it is 0.0.0.0 because of replit
 const hostname = '0.0.0.0';
 const port = 8080;
 
@@ -21,6 +22,8 @@ const server = http.createServer((req, res) => {
     })
 })
 
+
+//if running remotely like in replit, you have to remove 'hostname'
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
