@@ -1,7 +1,7 @@
 import http from 'http';
 import fs from 'fs';
 
-const hostname = 'localhost';
+const hostname = '0.0.0.0';
 const port = 8080;
 
 const server = http.createServer((req, res) => {
