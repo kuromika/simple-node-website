@@ -6,6 +6,7 @@ const port = 8080;
 
 const server = http.createServer((req, res) => {
     const reqUrl = new URL(req.url, `http://${hostname}:${port}`);
+    res.setHeader('Content-Type', 'text/html');
     fs.readFile(reqUrl.pathname === '/' ? 'index.html' :
      `${reqUrl.pathname.substring(1)}.html`, (err, data) => {
         if (err) {
