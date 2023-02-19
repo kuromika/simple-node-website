@@ -1,30 +1,28 @@
-import http from 'http';
 import fs from 'fs';
+import express from 'express'
 
-//hostname could be 'localhost', in this case it is 0.0.0.0 because of replit
-const hostname = '0.0.0.0';
-const port = 8080;
+const app = express();
 
-const server = http.createServer((req, res) => {
-    const reqUrl = new URL(req.url, `http://${hostname}:${port}`);
-    res.setHeader('Content-Type', 'text/html');
-    fs.readFile(reqUrl.pathname === '/' ? 'index.html' :
-     `${reqUrl.pathname.substring(1)}.html`, (err, data) => {
-        if (err) {
-            res.statusCode = 404;
-            fs.readFile('404.html', (err, data) => {
-                return res.end(data);
-            })
-        } else {
-            res.statusCode = 200;
-            return res.end(data);
-        }
-    })
-})
+const route = (path, file) => {
+    app.get(path, function(req, res){
+        res.setHeader('Content-Type', 'text/html');
+        path === '*' ? res.status(404) : res.status(200)
+        fs.readFile(file, (err, data) => {
+            if (err){
+                console.log(err);
+            } else {
+                res.send(data);
+            }
+        })
+    });
+}
 
+
+route('/', 'index.html');
+route('/about', 'about.html');
+route('/contact-me', 'contact-me.html');
+route('*', '404.html');
 
 //if running remotely like in replit, you have to remove 'hostname'
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-})
+app.listen(3000);
